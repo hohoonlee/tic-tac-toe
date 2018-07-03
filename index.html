@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="./app.js"></script>
+	<style>
+		body {
+			font-size: 40px;
+		}
+		table td {
+			border: 2px solid red;
+			padding: 0 10px 0 10px;
+			margin: 0 -11px 0 0;
+			width: 40px;
+			text-align: center;
+		}
+	</style>
+	<script>
+		$(document).ready(function(){
+			const HtmlRenderer = class {
+				setHtml(id, html) {
+					$('#'+id).html(html);
+				}
+				show(list) {
+					const self = this;
+					list.forEach((v,i) => self.setHtml('board'+i, (v)?v:'&nbsp;'));
+				}
+				end(winner) {
+					if(winner) {
+						this.setHtml('msg', `${winner} WIN!`);
+					}
+				}
+			}
+
+			
+			const board = new Board(new HtmlRenderer());
+			const user 	= new User('O', board);
+			const me 	= new User('X', board);
+
+			$('td').on('click', function() {
+				const $this = $(this);
+				if(user.check($this.attr('id').substring(5))) return $('td').off('click');
+				setTimeout(() => {
+					let emptyList = board.emptyList();
+					if(emptyList && !me.check(emptyList[Math.floor(Math.random() * emptyList.length)])) return;
+					$('td').off('click');
+				}, 1000);
+			});
+		});
+	</script>
+</head>
+<body>
+	<table>
+		<tr>
+			<td id="board0">&nbsp;</td>
+			<td id="board1">&nbsp;</td>
+			<td id="board2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td id="board3">&nbsp;</td>
+			<td id="board4">&nbsp;</td>
+			<td id="board5">&nbsp;</td>
+		</tr>
+		<tr>
+			<td id="board6">&nbsp;</td>
+			<td id="board7">&nbsp;</td>
+			<td id="board8">&nbsp;</td>
+		</tr>
+	</table>
+	<!-- table>(tr>td#board$@0{&nbsp;}*3)*3 -->
+	<div id="msg">&nbsp;</div>
+</body>
+</html>
