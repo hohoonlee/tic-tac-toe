@@ -71,7 +71,7 @@ const ConsoleRenderer = class {
 }
 
 
-if(require) {
+if(typeof process === 'object' && typeof global === 'object') {
 	const readline = require('readline');
 	const rl = readline.createInterface({
 		input: process.stdin,
