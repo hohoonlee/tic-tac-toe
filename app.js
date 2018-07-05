@@ -71,7 +71,7 @@ const ConsoleRenderer = class {
 }
 
 
-if(!window) {
+if(require) {
 	const readline = require('readline');
 	const rl = readline.createInterface({
 		input: process.stdin,
